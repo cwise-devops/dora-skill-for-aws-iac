@@ -79,6 +79,28 @@ RTS Art. 8(2) includes accounts, data and connections in the separation.
 - Add VPC endpoint policies that allow access only to buckets in the organisation (`aws:ResourceOrgID`).
 - Add S3 lifecycle expiration rules for data that the entity no longer needs.
 
+## OPS-10: Monitor each control continuously
+
+**Article**: DORA Art. 9(1); RTS Art. 2(2)(c)(i) and 11(2)(b). **Basis**: Explicit for the monitoring. Practice for the AWS measures.
+
+Controls decay silently after deployment.
+
+- For each Met control, find the AWS Config rule or the Security Hub control that examines the evidence.
+- If AWS has such a rule or control, add it.
+- Send an alert when a rule or a control becomes non-compliant (DET-02).
+- In the control map, add the rule name or the control ID to the evidence.
+
+## OPS-11: Make the build chain verifiable
+
+**Article**: RTS Art. 10(2)(d), 16(7) and 16(8). **Basis**: Explicit objective. Practice measure.
+
+An unsigned pipeline and unknown sub-suppliers keep SOV-5 at SEAL-1 (AST-09).
+
+- Make a software bill of materials (SBOM) for each build. Include the licence of each component.
+- Stop the deployment if the SBOM is missing or contains a critical vulnerability.
+- Sign each artifact and its build provenance (OPS-08). Use SLSA Build Level 2 as the minimum.
+- Keep the SBOMs and the provenance with each release, so that an auditor can read them.
+
 ## Out of IaC scope
 
 - The ICT operations policies and procedures (RTS Art. 8).
