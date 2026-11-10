@@ -18,3 +18,8 @@ Copy `skills/dora-aws-iac` into `~/.claude/skills/` (personal) or `.claude/skill
 - Delegated Regulation (EU) 2024/1772: incident classification RTS
 - Delegated Regulation (EU) 2025/301: incident report time limits
 - Implementing Regulation (EU) 2024/2956: register of information ITS
+
+Guidance (controls with the basis "Guidance"):
+
+- European Commission, Cloud Sovereignty Framework v1.2.1 (20 October 2025), as explained at <https://www.eucloudpatterns.eu/seal-framework/> and <https://www.eucloudpatterns.eu/seal-framework/two-architectures-seal-profiles/>
+- EBA, Guidelines on SREP and supervisory stress testing (EBA/GL/2026/06), apply from 1 January 2027: <https://www.eba.europa.eu/sites/default/files/2026-06/fd5fbfa1-2efb-4122-8e91-4831469d8150/Final%20Report%20on%20revised%20SREP%20and%20supervisory%20stress%20testing%20Guidelines.pdf>

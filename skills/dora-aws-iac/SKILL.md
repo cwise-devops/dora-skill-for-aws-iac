@@ -27,6 +27,7 @@ DORA tells the entity to have policies, procedures and tools. IaC can show only 
 - Tell the user the basis of each control:
   - **Explicit**: the regulation text gives the measure or the number.
   - **Practice**: the regulation gives an objective. The AWS measure is a usual way to get that objective.
+  - **Guidance**: the regulation does not give the measure. A supervisor or a framework gives it. Tell the user the source.
 
 ## Procedure
 
@@ -42,6 +43,7 @@ Find these facts before you write IaC. Look in the repository first, for example
 | RTO and RPO | Set the backup frequency, the redundancy and the DR pattern. | Required input variable |
 | Regions | The register of information records the country of data storage and processing (AST-03). | Required input variable |
 | Retention periods | The entity sets log and backup retention from its risk assessment (LOG-05). | Required input variable |
+| Sovereignty target | Sets the Regions and the key custody (AST-09). | SEAL-1 |
 
 If the user does not know a fact, use the value in the table. Record each such value as an assumption in the control map.
 
@@ -59,7 +61,7 @@ Make a list of each AWS resource that you will write or examine. For each resour
 | [logging-detection.md](references/logging-detection.md) | accounts, CloudTrail, log destinations, alarms, CIF compute or data stores |
 | [backup-recovery.md](references/backup-recovery.md) | data stores, AWS Backup, Multi-AZ or multi-Region designs, CIF workloads |
 | [operations-change.md](references/operations-change.md) | accounts, pipelines, IaC state, compute, images, container registries, scaling |
-| [assets-third-party.md](references/assets-third-party.md) | AWS Organizations, Region choice, AWS Config, connections to external services |
+| [assets-third-party.md](references/assets-third-party.md) | AWS Organizations, Region choice, AWS Config, external services, `dora/dependencies.yaml` |
 
 Step 2 is complete when each resource has a list of applicable control IDs.
 
@@ -74,9 +76,14 @@ For a review task, go to step 4.
 
 #### AST-01: DORA tags
 
-**Article**: RTS Art. 4(2)(b); DORA Art. 8(1). Simplified: RTS Art. 30(1). **Basis**: Explicit for the data. Practice for tags.
+**Article**: RTS Art. 4(2)(b); DORA Art. 8(1); ITS 2024/2956 Art. 3(3). Simplified: RTS Art. 30(1). **Basis**: Explicit for the data. Practice for tags.
 
 RTS Art. 4(2)(b) tells the entity to record these data for each ICT asset. AWS gives the unique identifier (ARN) and the location (Region).
+
+Use one name for each function and each component. Use the same names in the tags, the register of information and the ADRs.
+
+- Put the permitted values of `dora:function` and `dora:owner` in one list.
+- Make the IaC reject a tag value that is not in the list, for example with a Terraform variable validation.
 
 | Tag key | Value | Article |
 |---|---|---|
@@ -113,9 +120,13 @@ Write the control map to `docs/dora-control-map.md`, or to the path that the use
 | LOG-05 | RTS Art. 12(2)(a) | Explicit | aws_cloudwatch_log_group.app | Assumed | Retention is a required variable. The entity must set it. |
 ```
 
-Under the table, add two lists:
+Under the table, add these lists:
 
 1. **Assumptions**: each value from step 1 that the user did not give.
 2. **Out of IaC scope**: each policy or process that the entity must have, with its article. Each catalogue file has a list of these items.
+3. **Exit decomposition**: for each CIF component, the AWS service, its portability, its substitutability, the data export path and the alternative (AST-06).
+4. **Register changes**: each change that can need an update of the register of information or a notification to the competent authority (AST-08).
 
-In your answer, give the Gaps first. Then give the path to the control map.
+If the repository keeps ADRs, write an ADR for each decision that sets a control. Examples are the DR pattern, the Regions and an accepted Gap.
+
+In your answer, give the Gaps first. Then give the register changes and the path to the control map.

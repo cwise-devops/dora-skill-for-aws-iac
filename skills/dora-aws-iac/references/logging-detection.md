@@ -61,6 +61,17 @@ RTS Art. 22(d) refers to Art. 15 of RTS 2024/1772. The published RTS 2024/1772 h
 - EC2 instances and AMIs use the Amazon Time Sync Service (`169.254.169.123`) in the chrony configuration.
 - Record the time source in the repository documentation.
 
+## LOG-08: Design logs for incident reconstruction
+
+**Article**: RTS Art. 12(2)(b) and 23(4); DORA Art. 13(2)(b); RTS 2024/1772 Art. 3. **Basis**: Explicit objective. Practice measure.
+
+Logs must show the full timeline of an incident, not only the data for debugging. DORA Art. 13(2)(b) examines the quality and the speed of the forensic analysis after a major incident.
+
+- Write application logs as structured JSON.
+- Give each event a UTC timestamp, a request ID, the principal, the resource ARN, the action and the result.
+- Send one trace ID through all services, for example with the `X-Amzn-Trace-Id` header or AWS X-Ray.
+- Make the log archive searchable with Amazon Athena or CloudWatch Logs Insights. One query can then show the events from all accounts.
+
 ## DET-01: Detect anomalous activity
 
 **Article**: DORA Art. 10(1); RTS Art. 23(2)(a) and (b). Simplified: RTS Art. 34(g). **Basis**: Explicit. RTS Art. 23(2)(b) asks for alert tools at minimum for CIF assets.
@@ -89,10 +100,21 @@ RTS 2024/1772 Art. 3(1) measures the incident duration from the time of occurren
 - Keep GuardDuty and Security Hub findings in the log archive. They contain the first observed time, the creation time and the type.
 - Keep logs long enough to find the start of an incident (LOG-05).
 
+## DET-04: Test the detection and the alert path
+
+**Article**: DORA Art. 10(1), second subparagraph. **Basis**: Explicit.
+
+A documented control does not show that it works in an incident.
+
+- Add a scheduled job that creates GuardDuty sample findings with `CreateSampleFindings`.
+- Make sure that each sample finding gets to the on-call tool (DET-02). Mark it as a test.
+- Add a scheduled test of the logging failure alert (LOG-06).
+- Record the result of each test in the log archive.
+
 ## Out of IaC scope
 
 - The list of events to log and the purpose of each log (RTS Art. 12(2)(a)).
 - The incident management policy and the contact list (RTS Art. 22).
 - The roles and responsibilities for detection and response (RTS Art. 23(1)).
-- The test of the detection mechanisms (DORA Art. 10(1)).
+- The test plan for the detection mechanisms and the review of the test results (DORA Art. 10(1)).
 - The classification and the reports of major incidents (DORA Art. 18 and 19).

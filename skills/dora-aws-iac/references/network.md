@@ -35,7 +35,7 @@ DORA tells the entity to design the network so that it can sever or segment a co
 
 - Ingress: use CloudFront or an internet-facing load balancer with AWS WAF managed rule groups.
 - For CIF endpoints, use AWS Shield Advanced.
-- Egress: use NAT gateways with AWS Network Firewall, or a proxy with a domain allow list.
+- Egress: use NAT gateways with AWS Network Firewall, or a proxy with a domain allow list. Build the allow list from `dora/dependencies.yaml` (AST-04).
 - Use VPC endpoints for AWS services. Use gateway endpoints for S3 and DynamoDB. Limit each endpoint with an endpoint policy.
 - Give instances no public IP addresses. Set RDS instances to not publicly accessible.
 - Turn on S3 Block Public Access at the account level.

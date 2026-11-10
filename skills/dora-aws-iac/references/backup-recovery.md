@@ -44,6 +44,9 @@ DORA Art. 12(3) tells the entity to restore on systems that are physically and l
 - Select the DR pattern from the RTO and RPO variables: backup and restore, pilot light, warm standby, or active-active.
 - For a multi-Region design, use Aurora Global Database, DynamoDB global tables, S3 replication and cross-Region backup copies.
 - Use Route 53 failover routing or Route 53 Application Recovery Controller.
+- Use only data plane actions for failover, for example Route 53 health checks or Application Recovery Controller routing controls.
+- The control planes of IAM, Route 53 and CloudFront are in `us-east-1`. A failover that changes these services depends on that Region.
+- Make sure that the secondary site does not share a failure domain with the primary site. A second Availability Zone does not protect against a Region event.
 
 Some entity types have stricter limits:
 

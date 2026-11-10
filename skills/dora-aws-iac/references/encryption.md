@@ -31,6 +31,7 @@ RTS Art. 6(4) tells the entity to change cryptographic technology when cryptanal
 - Put the TLS security policy names in one variable or constant. One change then updates all endpoints.
 - Use AWS managed TLS policies that support TLS 1.3, for example `ELBSecurityPolicy-TLS13-1-2-2021-06`.
 - CloudFront: use `TLSv1.2_2021` as the minimum protocol version.
+- Prepare for post-quantum cryptography. When AWS gives a post-quantum TLS policy for an endpoint type, change the one variable.
 
 ## ENC-04: Manage KMS keys through their full lifecycle
 
