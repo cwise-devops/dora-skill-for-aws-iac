@@ -6,8 +6,7 @@ An agent skill for writing and reviewing AWS infrastructure as code (Terraform, 
 
 - `skills/dora-aws-iac/SKILL.md`: the procedure (context, controls, write, examine, control map) and the DORA tag set.
 - `skills/dora-aws-iac/references/`: the control catalogue, with one file for each domain. Each control gives the articles, the basis (Explicit, Practice or Guidance) and the AWS evidence.
-
-- `docs/guide.md`: setup, examples and control map interpretation.
+- `docs/guide.md`: how to use the skill, with examples.
 
 ## Install
 
@@ -15,12 +14,12 @@ Copy `skills/dora-aws-iac` into `~/.claude/skills/` (personal) or `.claude/skill
 
 ## Usage
 
-Ask to apply DORA controls to AWS IaC, or type `/dora-aws-iac`. Read [docs/guide.md](docs/guide.md) for the setup, example prompts and how to read the control map.
+Mention DORA, or type `/dora-aws-iac`. Read [docs/guide.md](docs/guide.md) for the setup, example prompts and how to read the control map.
 
 ## Sources
 
 - Regulation (EU) 2022/2554 (DORA)
-- Delegated Regulation (EU) 2024/1774: ICT risk management RTS, including the simplified framework
+- Delegated Regulation (EU) 2024/1774: ICT risk management RTS and the simplified framework
 - Delegated Regulation (EU) 2024/1772: incident classification RTS
 - Delegated Regulation (EU) 2025/301: incident report time limits
 - Implementing Regulation (EU) 2024/2956: register of information ITS

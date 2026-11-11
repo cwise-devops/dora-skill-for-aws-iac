@@ -20,7 +20,7 @@ Start a new Claude Code session after you install the skill.
 
 ## 2. Start the skill
 
-The skill can start automatically when you ask to apply DORA controls to AWS IaC, or when you write or review AWS IaC for an EU financial entity. You can also start it by name:
+The skill starts automatically when you mention DORA, or when you write IaC for an EU financial entity. You can also start it by name:
 
 ```text
 /dora-aws-iac
@@ -39,13 +39,11 @@ In step 1, the skill looks for seven facts. If it cannot find a fact, it asks yo
 - RTO / RPO: card-payments 4h / 15m
 - Regions: eu-central-1 (DE), eu-west-1 (IE)
 - Retention: <log and backup periods from your ICT risk assessment>
-- Sovereignty profile: none requested; apply the approved Regions above
+- Sovereignty target: SEAL-1
 - Function names (controlled list): card-payments, customer-onboarding, marketing-site
 ```
 
-The values above are examples. Use the values of your entity. DORA gives no retention period. Your ICT risk assessment sets it. A documented, approved retention constant can satisfy the control; an input variable alone does not establish adequacy.
-
-Unknown RTO, RPO or approved Regions permit scaffolding only. The skill leaves the recovery architecture and Region selection unresolved until the values are available. Simplified-framework controls use their own citations and intervals; full-framework controls without a verified simplified basis are optional Practice or Unknown, rather than automatic legal obligations.
+The values above are examples. Use the values of your entity. DORA gives no retention period. Your ICT risk assessment sets it.
 
 If a fact is missing, the skill uses these defaults and records them as assumptions:
 
@@ -55,7 +53,7 @@ If a fact is missing, the skill uses these defaults and records them as assumpti
 | CIF | The workload supports a CIF |
 | Data classification | Confidential |
 | RTO, RPO, Regions, retention | Required input variables with no default value |
-| Sovereignty target | No additional profile unless requested and approved by the entity |
+| Sovereignty target | SEAL-1 |
 
 ## 4. Example: write new infrastructure
 
@@ -127,30 +125,24 @@ In CDK, the skill adds the tags with `Tags.of(app).add("dora:function", "card-pa
 **Prompt:**
 
 ```text
-Review the CDK app in infra/ against DORA. Do not change any files.
+Review the CDK app in infra/ against DORA. Do not change the code yet.
 ```
 
-For a review, the skill skips step 3. It examines the code that is in the repository. If you request no file changes, it returns the control map in the answer and does not write files or ADRs.
+For a review, the skill skips step 3. It examines the code that is in the repository.
 
 **Example answer (part):**
 
 ```text
 Gaps (3):
-- BCK-02 LedgerDb: verified backups stay in the workload account, contrary to
-  the approved policy. Add a copy to the backup account and select vault
-  protection from that policy. Approve any immutable lock before deployment.
+- BCK-02 LedgerDb: backups stay in the workload account. Add a copy to the
+  backup account with AWS Backup Vault Lock.
 - NET-03 BastionSg: port 22 is open to 0.0.0.0/0. Use SSM Session Manager.
-- LOG-05 ApiLogs: retention is 7 days, but the approved policy requires 90 days.
-  Set the configured retention to the approved period.
-
-Unknown (1):
-- DET-01: central GuardDuty configuration is outside this repository. Verify it
-  before recommending another detector.
+- LOG-05 ApiLogs: retention is 7 days and fixed in code. Use a required variable.
 
 Register changes (1):
 - AST-08: new external service api.example-pay.eu for card-payments.
 
-Control map: included in this answer because file changes were excluded.
+Control map: docs/dora-control-map.md
 ```
 
 Then ask the skill to close the gaps:
@@ -189,26 +181,25 @@ The skill:
 
 | Case | Tell the skill | Effect |
 |---|---|---|
-| Entity eligible under DORA Art. 16(1) | Give the entity category and confirmed eligibility | The skill uses RTS Title III citations; size alone does not establish eligibility |
+| Small entity (DORA Art. 16(1)) | "Entity type: simplified framework" | The skill refers to RTS Title III articles |
 | CCP, CSD or trading venue | The entity type | Recovery limits of 2 hours or less, and a secondary site in a second Region (BCK-05) |
-| Stronger key control | Give the approved key custody and sovereignty requirements | The skill selects supported key controls and records evidence for a separate assessment; it does not assign a SEAL level (AST-09) |
+| Stronger key control | "Sovereignty target: SEAL-2 on SOV-2 and SOV-3" | KMS keys with imported key material (BYOK) for regulated workloads (AST-09) |
 | Workload that does not support a CIF | "marketing-site is not a CIF" | Fewer controls, and longer review intervals |
 
 ## 8. Read the control map
 
 Each row is one pair of resource and control:
 
-| Control | Article | Basis | Resource | Status | Evidence scope | Evidence or action |
-|---|---|---|---|---|---|---|
-| ENC-01 | DORA Art. 9(2); RTS Art. 6(2)(a) | Explicit objective; Practice measure | aws_rds_cluster.ledger | Met | Source code | database.tf:14 configures encryption; deployment not verified |
-| BCK-02 | DORA Art. 12(2), 12(3) | Explicit objective; Practice measure | aws_rds_cluster.ledger | Gap | Deployed configuration | backup-review.md:12 confirms the only copy is in the workload account, contrary to the approved policy |
-| LOG-05 | RTS Art. 12(2)(a) | Explicit objective; Practice measure | aws_cloudwatch_log_group.ledger | Unknown | Source code | The approved retention policy and effective input value are unavailable |
+| Control | Article | Basis | Resource | Status | Evidence or action |
+|---|---|---|---|---|---|
+| ENC-01 | DORA Art. 9(2); RTS Art. 6(2)(a) | Explicit | aws_rds_cluster.ledger | Met | database.tf:14 |
+| BCK-02 | DORA Art. 12(3) | Explicit | aws_rds_cluster.ledger | Gap | Add a cross-account backup copy |
+| LOG-05 | RTS Art. 12(2)(a) | Explicit | aws_cloudwatch_log_group.ledger | Assumed | The entity must set the retention |
 
 | Status | Meaning |
 |---|---|
-| Met | The evidence shows the measure within its stated scope. Source evidence does not prove deployment or operational effectiveness. |
-| Gap | Evidence shows that an applicable control is missing or inadequate. The action tells how to correct it. |
-| Unknown | Evidence, required context or central configuration is unavailable. The action tells how to verify it. |
+| Met | The IaC shows the control. The evidence gives the file and the line. |
+| Gap | The control has no evidence. The action tells how to add it. |
 | Out of IaC scope | The control needs a policy or a process. IaC cannot show it. |
 | Assumed | The status depends on a default value from step 1. |
 
@@ -220,7 +211,7 @@ Each row is one pair of resource and control:
 
 Under the table, the control map has four lists:
 
-1. **Assumptions and unresolved inputs**: the defaults, missing inputs, selected framework and applicable exceptions.
+1. **Assumptions**: the default values that the skill used.
 2. **Out of IaC scope**: the policies and processes that your entity must have.
 3. **Exit decomposition**: for each CIF component, the portability, the substitutability and the alternative.
 4. **Register changes**: the changes that can affect the register of information.
