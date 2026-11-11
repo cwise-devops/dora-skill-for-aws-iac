@@ -2,7 +2,7 @@
 
 ## IAM-01: Give least privilege
 
-**Article**: DORA Art. 9(4)(c); RTS Art. 21(a) and 21(d). Simplified: RTS Art. 33(a). **Basis**: Explicit.
+**Article**: DORA Art. 9(4)(c); RTS Art. 21(a) and 21(d). Simplified: RTS Art. 33(a). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Policies name the actions and the resource ARNs. Use wildcards only where the API has no resource-level permissions.
 - Add conditions, for example `aws:PrincipalOrgID`, `aws:ResourceOrgID` and `aws:SourceAccount`.
@@ -12,7 +12,7 @@
 
 ## IAM-02: Give each person and each system a unique identity
 
-**Article**: RTS Art. 20(1), 20(2) and 21(c). Simplified: RTS Art. 33(b). **Basis**: Explicit.
+**Article**: RTS Art. 20(1), 20(2) and 21(c). Simplified: RTS Art. 33(b). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - People sign in through IAM Identity Center with the corporate identity provider. Write IAM roles and permission sets, not IAM users, for people.
 - Provision identities from the identity provider with SCIM. RTS Art. 20(2) asks for automated identity lifecycle where feasible.
@@ -21,7 +21,7 @@
 
 ## IAM-03: Use strong authentication
 
-**Article**: DORA Art. 9(4)(d); RTS Art. 21(f). Simplified: RTS Art. 33(d). **Basis**: Explicit.
+**Article**: DORA Art. 9(4)(d); RTS Art. 21(f). Simplified: RTS Art. 33(d). **Basis**: Explicit objective. Practice for the AWS measures.
 
 RTS Art. 21(f)(ii) asks for strong authentication for remote access, privileged access, access to CIF assets and access to publicly accessible assets.
 
@@ -31,7 +31,7 @@ RTS Art. 21(f)(ii) asks for strong authentication for remote access, privileged 
 
 ## IAM-04: Give privileged access only when it is necessary
 
-**Article**: RTS Art. 21(e)(ii). Simplified: RTS Art. 33(c). **Basis**: Explicit.
+**Article**: RTS Art. 21(e)(ii). Simplified: RTS Art. 33(c). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Use dedicated permission sets or roles for administrator tasks.
 - Give elevated access for a limited time and with approval, for example through a just-in-time access tool.
@@ -40,7 +40,7 @@ RTS Art. 21(f)(ii) asks for strong authentication for remote access, privileged 
 
 ## IAM-05: Separate duties
 
-**Article**: RTS Art. 21(b) and 17(1)(b). **Basis**: Explicit.
+**Article**: RTS Art. 21(b) and 17(1)(b). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - In production, people get read-only access. Only the pipeline role deploys changes (OPS-02).
 - Key administrators cannot use keys to decrypt data (ENC-04).
@@ -48,7 +48,7 @@ RTS Art. 21(f)(ii) asks for strong authentication for remote access, privileged 
 
 ## IAM-06: Make access reviews possible
 
-**Article**: RTS Art. 21(e)(iv). Simplified: RTS Art. 33(e). **Basis**: Explicit. The entity must review access every 6 months for a CIF, and every year for other systems.
+**Article**: RTS Art. 21(e)(iv). Simplified: RTS Art. 33(e). **Basis**: Explicit objective. Practice for the AWS measures. The entity must review access every 6 months for a CIF, and every year for other systems.
 
 - Turn on IAM Access Analyzer unused access findings.
 - Keep all permission sets and role policies in IaC, so that a reviewer can read them.
