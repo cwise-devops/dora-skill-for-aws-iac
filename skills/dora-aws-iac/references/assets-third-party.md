@@ -78,7 +78,7 @@ Automate the data source, not the document.
 
 ## AST-08: Find changes that affect the register of information
 
-**Article**: DORA Art. 28(3), fifth subparagraph. **Basis**: Explicit.
+**Article**: DORA Art. 28(3), fifth subparagraph. **Basis**: Explicit for the notification obligation. Practice for recording change candidates in the control map.
 
 The entity must tell the competent authority in time about each planned contractual arrangement for a CIF. It must also tell the authority when a function becomes critical or important.
 
@@ -88,45 +88,19 @@ Record each of these changes in the control map:
 - A new Region, or a new country, for CIF data.
 - A change of `dora:cif` from `false` to `true`.
 
-## AST-09: Keep data, keys and dependencies inside the sovereignty target
+## AST-09: Support an entity-approved sovereignty profile, if requested
 
-**Article**: DORA has no article. RTS Art. 26(2)(h) tells the entity to plan for political instability in the provider's jurisdiction and in the data location. **Basis**: Guidance: European Commission Cloud Sovereignty Framework v1.2.1, as explained at <https://www.eucloudpatterns.eu/seal-framework/> and <https://www.eucloudpatterns.eu/seal-framework/two-architectures-seal-profiles/>.
+**Article**: DORA does not prescribe a SEAL level. RTS Art. 26(2)(h) concerns disruption scenarios involving political instability in the provider's jurisdiction and data location. **Basis**: Guidance for the optional sovereignty assessment; Practice for AWS implementation choices.
 
-The framework is a procurement benchmark, not EU law. The revised EBA SREP Guidelines (EBA/GL/2026/06) do not refer to SEAL and do not ask for EU data residency.
+Use the [European Commission Cloud Sovereignty Framework and implementation guidance](https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en). The framework was developed for procurement assessment. Do not turn its thresholds into DORA obligations or assign a SEAL level from an AWS service selection.
 
-The framework gives one SEAL level for each of the eight sovereignty objectives (SOV-1 to SOV-8). Record the target and the result for each objective, not one label. IaC cannot set a SEAL level. IaC can keep data, keys and dependencies inside the target.
-
-| Level | Name | Use |
-|---|---|---|
-| SEAL-0 | No sovereignty | Not suitable for DORA workloads |
-| SEAL-1 | Jurisdictional sovereignty | The target for most fintech and banking workloads |
-| SEAL-2 | Data sovereignty | An uplift on SOV-2 and SOV-3 with BYOK, if the entity asks for it |
-| SEAL-3 | Digital resilience | Needs a change of provider for SOV-1 to SOV-6 |
-| SEAL-4 | Full digital sovereignty | National security and defence |
-
-An AWS workload in an EU Region is usually SEAL-1 overall. IaC has an effect on these objectives:
-
-| Objective | IaC measure | Controls |
-|---|---|---|
-| SOV-2 Legal and jurisdictional | BYOK for regulated workloads | AST-09 |
-| SOV-3 Data and AI | EU Regions and BYOK | AST-03, AST-09 |
-| SOV-4 Operational | The full infrastructure in IaC, and portable services | AST-06 |
-| SOV-5 Supply chain | Signed builds, an SBOM gate, and the provider behind each provider | OPS-11, AST-04 |
-| SOV-6 Technology | Non-proprietary APIs and a licence inventory | AST-06, OPS-11 |
-| SOV-7 Security and compliance | This catalogue | All |
-
-For SEAL-1:
-
-- Put only EU Regions in the Region variable and in the SCP (AST-03).
-- Make sure that replication, backup copies and log archives stay in EU Regions.
-
-For SEAL-2 on SOV-2 and SOV-3, if the entity asks for it:
-
-- Use KMS keys with imported key material (BYOK) for regulated workloads. Generate the key material in an HSM in the EU, outside AWS.
-- KMS automatic rotation (ENC-04) does not apply to imported key material. The entity rotates the key material and keeps its backup. Record this in the control map.
-- BYOK does not stop a legal order to AWS. AWS KMS still holds a working copy of the key.
-
-For SEAL-3 on SOV-3, hold your own key (HYOK) with an AWS KMS external key store. The only master key then stays in the entity's HSM outside AWS. SEAL-3 on SOV-1 to SOV-6 also needs a change of provider. If the target is SEAL-3, record a Gap for these objectives and tell the user.
+- Apply this control only when the entity requests a sovereignty profile. Record its approved requirements, framework version and assessment scope.
+- Configure approved Regions and destinations for replication, backups and logs (AST-03). DORA alone does not establish an EU-only Region list.
+- Record key custody requirements. Use AWS-generated key material, imported key material (BYOK), or an external key store as the approved design requires. Assess service support, availability, recovery and operational dependencies before selecting a key store.
+- Imported key material does not support KMS automatic rotation. Define the import, rotation and backup procedures. Symmetric encryption keys with imported material support on-demand rotation. See [AWS KMS rotation documentation](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html).
+- BYOK leaves a working copy of key material in AWS KMS. It does not prevent a legal order to AWS.
+- Supply location, key custody, portability and build-chain evidence to the separate assessment (AST-03, AST-04, AST-06, OPS-11). An EU Region, BYOK or an external key store alone does not establish a SEAL level.
+- Record an unmet approved technical requirement as a Gap. Record an unverified sovereignty rating as Unknown. The entity's assessment must determine any provider change.
 
 ## Out of IaC scope
 
@@ -135,6 +109,6 @@ For SEAL-3 on SOV-3, hold your own key (HYOK) with an AWS KMS external key store
 - The contractual arrangements and the policy on ICT services for CIF (DORA Art. 28 to 30; RTS 2024/1773).
 - The assessment of ICT concentration risk (DORA Art. 29).
 - The exit plans and their tests (DORA Art. 28(8)).
-- The SEAL assessment for each sovereignty objective.
+- The sovereignty assessment, including any claimed SEAL level and supporting provider evidence.
 - The countries from where the provider gives support, also for escalation outside working hours (ITS 2024/2956 field B_02.02.0130).
 - The risk assessment of legacy ICT systems (DORA Art. 8(7)).

@@ -2,7 +2,7 @@
 
 ## OPS-01: Separate production from non-production
 
-**Article**: RTS Art. 8(2)(b)(v) and 16(5). **Basis**: Explicit.
+**Article**: RTS Art. 8(2)(b)(v) and 16(5). **Basis**: Explicit objective. Practice for the AWS measures.
 
 RTS Art. 8(2) includes accounts, data and connections in the separation.
 
@@ -19,7 +19,8 @@ RTS Art. 8(2) includes accounts, data and connections in the separation.
 - The pipeline shows the plan or the change set, and runs the policy scanner.
 - A person who did not write the change approves it (RTS Art. 17(1)(b)).
 - Only the pipeline can use the deploy role. Limit the OIDC trust policy to the repository and the protected branch.
-- Add a rollback path: CloudFormation rollback triggers, CodeDeploy automatic rollback, or the previous Terraform state version.
+- Add a rollback path: CloudFormation rollback triggers or CodeDeploy automatic rollback. For Terraform, revert to the intended configuration in version control, review a fresh plan against the current state, and apply it through the pipeline. Restoring an old state file does not roll back infrastructure.
+- Define separate recovery steps for data, resource replacements and other irreversible changes. Use state backups to recover damaged or lost state, with reconciliation against deployed resources.
 - Keep Terraform state in an encrypted S3 bucket with versioning and state lock.
 
 ## OPS-03: Use a secure configuration baseline and examine it regularly
@@ -40,7 +41,7 @@ RTS Art. 8(2) includes accounts, data and connections in the separation.
 
 ## OPS-05: Scan for vulnerabilities automatically
 
-**Article**: RTS Art. 10(2)(b) and 10(2)(d). Simplified: RTS Art. 34(d). **Basis**: Explicit. RTS Art. 10(2) asks for scans at least each week for CIF assets.
+**Article**: RTS Art. 10(2)(b) and 10(2)(d). Simplified: RTS Art. 34(d). **Basis**: Explicit objective. Practice for the AWS measures. RTS Art. 10(2) asks for scans at least each week for CIF assets.
 
 - Turn on Amazon Inspector for EC2, ECR and Lambda. Inspector scans continuously.
 - Turn on ECR enhanced scanning.
@@ -48,7 +49,7 @@ RTS Art. 8(2) includes accounts, data and connections in the separation.
 
 ## OPS-06: Patch with deadlines
 
-**Article**: DORA Art. 9(4)(f); RTS Art. 10(4). Simplified: RTS Art. 34(d). **Basis**: Explicit.
+**Article**: DORA Art. 9(4)(f); RTS Art. 10(4). Simplified: RTS Art. 34(d). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Use SSM Patch Manager with patch baselines and maintenance windows.
 - Put the approval delay for patches in a variable.
@@ -56,7 +57,7 @@ RTS Art. 8(2) includes accounts, data and connections in the separation.
 
 ## OPS-07: Plan capacity and prevent shortages
 
-**Article**: DORA Art. 7(c) and 7(d); RTS Art. 9(1). Simplified: RTS Art. 34(c). **Basis**: Explicit.
+**Article**: DORA Art. 7(c) and 7(d); RTS Art. 9(1). Simplified: RTS Art. 34(c). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Use Auto Scaling with limits from load tests.
 - Add CloudWatch alarms on utilisation for CIF resources.
@@ -94,7 +95,7 @@ Controls decay silently after deployment.
 
 **Article**: RTS Art. 10(2)(d), 16(7) and 16(8). **Basis**: Explicit objective. Practice measure.
 
-An unsigned pipeline and unknown sub-suppliers keep SOV-5 at SEAL-1 (AST-09).
+Signed builds and known sub-suppliers provide evidence for a separate sovereignty assessment (AST-09). They do not establish a SEAL level.
 
 - Make a software bill of materials (SBOM) for each build. Include the licence of each component.
 - Stop the deployment if the SBOM is missing or contains a critical vulnerability.

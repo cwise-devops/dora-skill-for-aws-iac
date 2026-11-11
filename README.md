@@ -5,11 +5,17 @@ An agent skill for writing and reviewing AWS infrastructure as code (Terraform, 
 ## Layout
 
 - `skills/dora-aws-iac/SKILL.md`: the procedure (context, controls, write, examine, control map) and the DORA tag set.
-- `skills/dora-aws-iac/references/`: the control catalogue, with one file for each domain. Each control gives the articles, the basis (Explicit or Practice) and the AWS evidence.
+- `skills/dora-aws-iac/references/`: the control catalogue, with one file for each domain. Each control gives the articles, the basis (Explicit, Practice or Guidance) and the AWS evidence.
+
+- `docs/guide.md`: setup, examples and control map interpretation.
 
 ## Install
 
 Copy `skills/dora-aws-iac` into `~/.claude/skills/` (personal) or `.claude/skills/` (project).
+
+## Usage
+
+Ask to apply DORA controls to AWS IaC, or type `/dora-aws-iac`. Read [docs/guide.md](docs/guide.md) for the setup, example prompts and how to read the control map.
 
 ## Sources
 
@@ -21,5 +27,5 @@ Copy `skills/dora-aws-iac` into `~/.claude/skills/` (personal) or `.claude/skill
 
 Guidance (controls with the basis "Guidance"):
 
-- European Commission, Cloud Sovereignty Framework v1.2.1 (20 October 2025), as explained at <https://www.eucloudpatterns.eu/seal-framework/> and <https://www.eucloudpatterns.eu/seal-framework/two-architectures-seal-profiles/>
+- European Commission, Cloud Sovereignty Framework and implementation guidance (optional entity-approved profile): <https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en>
 - EBA, Guidelines on SREP and supervisory stress testing (EBA/GL/2026/06), apply from 1 January 2027: <https://www.eba.europa.eu/sites/default/files/2026-06/fd5fbfa1-2efb-4122-8e91-4831469d8150/Final%20Report%20on%20revised%20SREP%20and%20supervisory%20stress%20testing%20Guidelines.pdf>

@@ -2,7 +2,7 @@
 
 ## BCK-01: Back up data at a frequency that agrees with its criticality
 
-**Article**: DORA Art. 12(1)(a) and 16(1)(f). Simplified: RTS Art. 39(2)(g). **Basis**: Explicit.
+**Article**: DORA Art. 12(1)(a) and 16(1)(f). Simplified: RTS Art. 39(2)(g). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Use AWS Backup plans. Set the schedule from the RPO variable.
 - Select the resources by the tags `dora:cif` and `dora:classification`.
@@ -16,13 +16,13 @@
 DORA Art. 12(3) tells the entity to restore on systems that are physically and logically segregated from the source system.
 
 - Copy each backup to a vault in a separate backup account in the organisation.
-- Use AWS Backup Vault Lock in compliance mode on that vault.
+- Select the vault protection mode from the approved retention and recovery policy. For compliance-mode AWS Backup Vault Lock, document retention, the grace period and recovery tests. Obtain explicit approval for the immutable configuration before deploying it. After the grace period, the lock cannot be changed or removed while recovery points remain. See [AWS Backup Vault Lock](https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html).
 - Add a vault access policy that denies the deletion of recovery points.
 - Encrypt the vault with a KMS key in the backup account.
 
 ## BCK-03: Restore in a segregated environment and test restores
 
-**Article**: DORA Art. 11(6), 12(2) and 12(3). Simplified: RTS Art. 40(1). **Basis**: Explicit.
+**Article**: DORA Art. 11(6), 12(2) and 12(3). Simplified: RTS Art. 40(1). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - Add AWS Backup restore testing plans for CIF resources.
 - Restore into an isolated account or VPC, not into production.
@@ -30,7 +30,7 @@ DORA Art. 12(3) tells the entity to restore on systems that are physically and l
 
 ## BCK-04: Keep redundant capacity for critical components
 
-**Article**: DORA Art. 11(5) and 12(4). **Basis**: Explicit. Microenterprises must assess the need for redundant capacity.
+**Article**: DORA Art. 11(5) and 12(4). **Basis**: Explicit objective. Practice for the AWS measures. Microenterprises must assess the need for redundant capacity.
 
 - Use Multi-AZ for RDS, Aurora, ElastiCache and OpenSearch.
 - Spread Auto Scaling groups, ECS services and EKS node groups across at least 2 Availability Zones.
@@ -60,7 +60,7 @@ For these entity types, use a second Region as the secondary processing site.
 
 ## BCK-06: Make the switchover testable
 
-**Article**: DORA Art. 11(6), second subparagraph; RTS Art. 25(2)(c). **Basis**: Explicit. This control does not apply to microenterprises.
+**Article**: DORA Art. 11(6), second subparagraph; RTS Art. 25(2)(c). **Basis**: Explicit objective. Practice for the AWS measures. This control does not apply to microenterprises.
 
 - Control the failover with one IaC variable or with Route 53 Application Recovery Controller routing controls.
 - Add AWS Fault Injection Service experiment templates for the loss of an instance, an Availability Zone or a dependency.

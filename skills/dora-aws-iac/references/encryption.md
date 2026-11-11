@@ -2,7 +2,7 @@
 
 ## ENC-01: Encrypt data at rest
 
-**Article**: DORA Art. 9(2); RTS Art. 6(2)(a). Simplified: RTS Art. 35(a). **Basis**: Explicit.
+**Article**: DORA Art. 9(2); RTS Art. 6(2)(a). Simplified: RTS Art. 35(a). **Basis**: Explicit objective. Practice for the AWS measures.
 
 - S3: default encryption with `aws:kms` and an S3 Bucket Key.
 - EBS: encryption by default in each account and Region. Encrypt each volume.
@@ -12,7 +12,7 @@
 
 ## ENC-02: Encrypt data in transit, also inside the VPC
 
-**Article**: RTS Art. 6(2)(a), 6(2)(c), 13(e) and 14(1)(a). Simplified: RTS Art. 35(d). **Basis**: Explicit.
+**Article**: RTS Art. 6(2)(a), 6(2)(c), 13(e) and 14(1)(a). Simplified: RTS Art. 35(d). **Basis**: Explicit objective. Practice for the AWS measures.
 
 RTS Art. 13(e) includes internal networks. TLS at the edge only is not sufficient.
 
@@ -46,7 +46,7 @@ RTS Art. 6(4) tells the entity to change cryptographic technology when cryptanal
 
 ## ENC-05: Keep a certificate register and renew certificates before expiry
 
-**Article**: RTS Art. 7(4) and 7(5). **Basis**: Explicit. RTS Art. 7(4) applies at minimum to CIF assets.
+**Article**: RTS Art. 7(4) and 7(5). **Basis**: Explicit objective. Practice for the AWS measures. RTS Art. 7(4) applies at minimum to CIF assets.
 
 - Use ACM certificates with DNS validation. ACM then renews them automatically.
 - Add the DORA tags (AST-01) to each certificate. ACM with these tags is the certificate register.
